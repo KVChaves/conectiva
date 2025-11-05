@@ -1,0 +1,422 @@
+/* ====== VARIÁVEIS DE COR ====== */
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
+}
+
+/* ====== RESET E ESTILOS GLOBAIS ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ====== NAVBAR ====== */
+.navbar-custom {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom .navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* ====== CONTAINER E LAYOUT ====== */
+.container-fluid {
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+.main-row {
+    margin: 0 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar-custom {
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    min-height: calc(100vh - 56px);
+    padding-top: 1rem;
+    width: 250px !important;
+    min-width: 250px !important;
+    max-width: 250px !important;
+    flex: 0 0 250px !important;
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    display: block !important;
+    z-index: 100;
+}
+
+.sidebar-custom .nav-link {
+    color: #374151;
+    padding: 0.75rem 1.5rem;
+    border-left: 3px solid transparent;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-custom .nav-link i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-custom .nav-link:hover {
+    background-color: #f3f4f6;
+    color: var(--primary-color);
+}
+
+.sidebar-custom .nav-link.active {
+    background-color: #f3f4f6;
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* ====== MAIN CONTENT ====== */
+.main-content {
+    flex: 1 !important;
+    padding: 2rem;
+    min-height: calc(100vh - 56px);
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.main-content-inner {
+    flex: 1;
+    width: 100%;
+}
+
+/* ====== FOOTER ====== */
+.footer-custom {
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 2rem;
+    margin-top: 3rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+/* ====== CARDS E HEADERS ====== */
+.card-header-custom {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border: none;
+    padding: 1.5rem;
+}
+
+.btn-primary-custom {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border: none;
+    transition: transform 0.3s;
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* ====== TABELAS ====== */
+.table-hover tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* ====== BADGES E ALERTS ====== */
+.badge-custom {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+}
+
+.alert-custom {
+    border-radius: 0.5rem;
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+/* ====== FORMULÁRIOS ====== */
+.form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* ====== TÍTULOS ====== */
+.page-title {
+    color: #1f2937;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.page-title i {
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+/* ====== MAPA ====== */
+#mapa {
+    width: 100%;
+    height: 600px;
+    border-radius: 0.5rem;
+}
+
+/* ====== FILTROS ====== */
+.filters {
+    background: white;
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    border-radius: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filters select,
+.filters input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.filters input[type="text"] {
+    flex: 1;
+    max-width: 300px;
+    min-width: 200px;
+}
+
+.filters input[type="text"]:focus,
+.filters select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+}
+
+/* ====== TOGGLE SIDEBAR (MOBILE) ====== */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 10px;
+    z-index: 1000;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ====== RESPONSIVE - MOBILE ====== */
+@media (max-width: 768px) {
+    .sidebar-custom {
+        position: fixed;
+        left: -250px;
+        top: 56px;
+        transition: left 0.3s ease;
+        z-index: 1001;
+    }
+
+    .sidebar-custom.show {
+        left: 0;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .sidebar-toggle {
+        display: block;
+    }
+
+    .main-row {
+        flex-wrap: wrap !important;
+    }
+}
+
+/* ====== CONFIGURAÇÃO ESPECÍFICA PARA PÁGINA DO MAPA ====== */
+/* Adicione a classe 'mapa-fullscreen' no <body> da página do mapa */
+
+body.mapa-fullscreen {
+    overflow: hidden;
+}
+
+body.mapa-fullscreen .main-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    position: fixed !important;
+    top: 56px !important;
+    bottom: 0 !important;
+    overflow: hidden !important;
+}
+
+body.mapa-fullscreen .sidebar-custom {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    bottom: 0;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    z-index: 1001;
+}
+
+body.mapa-fullscreen .footer-custom {
+    display: none !important;
+}
+
+/* Ajuste do main-content baseado na sidebar */
+@media (min-width: 768px) {
+    body.mapa-fullscreen .main-content {
+        left: 25% !important;
+        width: 75% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    body.mapa-fullscreen .main-content {
+        left: 16.666667% !important;
+        width: 83.333333% !important;
+    }
+}
+
+@media (max-width: 767px) {
+    body.mapa-fullscreen .sidebar-custom {
+        transform: translateX(-100%);
+    }
+    
+    body.mapa-fullscreen .main-content {
+        left: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* ====== MAPA FULLSCREEN ====== */
+body.mapa-fullscreen #mapa {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+}
+
+/* ====== TÍTULO DO MAPA (FLUTUANTE) ====== */
+body.mapa-fullscreen .page-title {
+    position: absolute !important;
+    top: 20px !important;
+    left: 20px !important;
+    background: white !important;
+    padding: 15px 20px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    z-index: 1000 !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    color: #333 !important;
+    border: none !important;
+    margin: 0 !important;
+}
+
+/* ====== FILTROS FLUTUANTES (NO MAPA) ====== */
+body.mapa-fullscreen .filters {
+    position: absolute !important;
+    top: 80px !important;
+    left: 20px !important;
+    background: white !important;
+    padding: 15px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    min-width: 280px !important;
+    border: none !important;
+    margin: 0 !important;
+    align-items: flex-start !important;
+    flex-wrap: wrap !important;
+}
+
+body.mapa-fullscreen .filters select,
+body.mapa-fullscreen .filters input {
+    width: 100%;
+}
+
+/* ====== POPUP DO MAPA ====== */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+}
+
+.popup-content {
+    font-size: 13px;
+    min-width: 250px;
+}
+
+.popup-content h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+}
+
+.popup-content p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.popup-content strong {
+    color: #333;
+}
+
+.popup-content hr {
+    margin: 5px 0;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+}
+
+.popup-content code {
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+/* ====== BOTÕES ====== */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+}

@@ -1,0 +1,193 @@
+<div class="page-title">
+    <i class="fas fa-chart-bar"></i> Dashboard
+</div>
+
+<!-- Cards de Estatísticas -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Total de Pontos</h6>
+                <h2 class="card-text" style="color: #667eea;">
+                    <i class="fas fa-globe"></i> <?php echo $stats['total_pontos']; ?>
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Cidades Atendidas</h6>
+                <h2 class="card-text" style="color: #10b981;">
+                    <i class="fas fa-city"></i> <?php echo $stats['total_cidades']; ?>
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Territórios</h6>
+                <h2 class="card-text" style="color: #f59e0b;">
+                    <i class="fas fa-map"></i> <?php echo $stats['total_territorios']; ?>
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gráficos -->
+<div class="row mb-4">
+    <!-- Pontos por Velocidade -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header card-header-custom">
+                <h5 class="mb-0">
+                    <i class="fas fa-tachometer-alt"></i> Pontos por Velocidade
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Velocidade</th>
+                            <th>Quantidade</th>
+                            <th>Percentual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($pontosPorVelocidade as $velocidade => $quantidade): ?>
+                            <?php $percentual = ($quantidade / $stats['total_pontos']) * 100; ?>
+                            <tr>
+                                <td><strong><?php echo htmlspecialchars($velocidade); ?></strong></td>
+                                <td><?php echo $quantidade; ?></td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-info" role="progressbar" 
+                                             style="width: <?php echo $percentual; ?>%" 
+                                             aria-valuenow="<?php echo $percentual; ?>" 
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            <?php echo round($percentual, 1); ?>%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pontos por Tipo -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header card-header-custom">
+                <h5 class="mb-0">
+                    <i class="fas fa-network-wired"></i> Pontos por Tipo
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Quantidade</th>
+                            <th>Percentual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($pontosPorTipo as $tipo => $quantidade): ?>
+                            <?php $percentual = ($quantidade / $stats['total_pontos']) * 100; ?>
+                            <tr>
+                                <td><strong><?php echo htmlspecialchars($tipo); ?></strong></td>
+                                <td><?php echo $quantidade; ?></td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-success" role="progressbar" 
+                                             style="width: <?php echo $percentual; ?>%" 
+                                             aria-valuenow="<?php echo $percentual; ?>" 
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            <?php echo round($percentual, 1); ?>%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Top 10 Cidades -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header card-header-custom">
+                <h5 class="mb-0">
+                    <i class="fas fa-list"></i> Top 10 Cidades com Mais Pontos
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Cidade</th>
+                            <th>Quantidade de Pontos</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1; ?>
+                        <?php foreach ($pontosPorCidade as $cidade => $quantidade): ?>
+                            <tr>
+                                <td><?php echo $i++; ?></td>
+                                <td><strong><?php echo htmlspecialchars($cidade); ?></strong></td>
+                                <td>
+                                    <span class="badge bg-primary badge-custom">
+                                        <?php echo $quantidade; ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="../conectiva/listar.php?cidade=<?php echo urlencode($cidade); ?>" 
+                                       class="btn btn-sm btn-info">
+                                        <i class="fas fa-list"></i> Ver Pontos
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ações Rápidas -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header card-header-custom">
+                <h5 class="mb-0">
+                    <i class="fas fa-bolt"></i> Ações Rápidas
+                </h5>
+            </div>
+            <div class="card-body">
+                <a href="../conectiva/criar.php" class="btn btn-success me-2">
+                    <i class="fas fa-plus"></i> Novo Ponto
+                </a>
+                <a href="../conectiva/listar.php" class="btn btn-info me-2">
+                    <i class="fas fa-list"></i> Listar Todos
+                </a>
+                <a href="../../index.php" class="btn btn-primary">
+                    <i class="fas fa-map"></i> Ver Mapa
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
