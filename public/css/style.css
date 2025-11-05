@@ -32,6 +32,11 @@ body {
     font-size: 1.5rem;
 }
 
+/* Adicionar espaçamento ao ícone */
+.navbar-custom .navbar-brand i {
+    margin-left: 12px;
+}
+
 /* ====== CONTAINER E LAYOUT ====== */
 .container-fluid {
     padding: 0 !important;
