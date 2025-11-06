@@ -1,3 +1,5 @@
+<!--constants.php-->
+
 <?php
 // Constantes gerais da aplicação
 define('APP_NAME', 'CONECTIVA - ADAB');

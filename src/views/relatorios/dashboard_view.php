@@ -138,7 +138,7 @@
                 <label for="territorio" class="form-label">Território</label>
                 <select class="form-select" id="territorio" name="territorio">
                     <option value="">-- Todos os Territórios --</option>
-                    <?php foreach (array_keys($GLOBALS['TERRITORIOS']) as $terr): ?>
+                    <?php foreach (array_keys($GLOBALS['territorios']) as $terr): ?>
                         <option value="<?php echo htmlspecialchars($terr); ?>" 
                                 <?php echo $territorio === $terr ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($terr); ?>
@@ -153,7 +153,7 @@
                     <option value="">-- Todas as Cidades --</option>
                     <?php 
                     $cidades = [];
-                    foreach ($GLOBALS['TERRITORIOS'] as $cids) {
+                    foreach ($GLOBALS['territorios'] as $cids) {
                         $cidades = array_merge($cidades, $cids);
                     }
                     $cidades = array_unique($cidades);
@@ -172,7 +172,7 @@
                 <button type="submit" class="btn btn-primary btn-primary-custom">
                     <i class="fas fa-search"></i> Filtrar
                 </button>
-                <a href="estatisticas.php" class="btn btn-secondary">
+                <a href="dashboard.php" class="btn btn-secondary">
                     <i class="fas fa-redo"></i> Limpar
                 </a>
             </div>

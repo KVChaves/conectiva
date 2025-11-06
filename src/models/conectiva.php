@@ -1,3 +1,5 @@
+<!--Conectiva.php-->
+
 <?php
 
 // Modelo não precisa de requires, mas se precisar:

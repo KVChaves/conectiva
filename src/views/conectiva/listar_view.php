@@ -24,9 +24,9 @@
 
             <div class="col-md-4">
                 <label for="territorio" class="form-label">Território</label>
-                <select class="form-select" id="territorio" name="territorio">
+                <select class="form-select" id="territorio" name="territorio" onchange="atualizarCidades()">
                     <option value="">-- Todos os Territórios --</option>
-                    <?php foreach (array_keys($GLOBALS['TERRITORIOS']) as $terr): ?>
+                    <?php foreach (array_keys($GLOBALS['territorios']) as $terr): ?>
                         <option value="<?php echo htmlspecialchars($terr); ?>" 
                                 <?php echo $filtros['territorio'] === $terr ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($terr); ?>
@@ -40,13 +40,19 @@
                 <select class="form-select" id="cidade" name="cidade">
                     <option value="">-- Todas as Cidades --</option>
                     <?php 
-                    $cidades = [];
-                    foreach ($GLOBALS['TERRITORIOS'] as $terr => $cids) {
-                        $cidades = array_merge($cidades, $cids);
+                    // Se um território foi selecionado, usar suas cidades
+                    if (!empty($filtros['territorio']) && isset($GLOBALS['territorios'][$filtros['territorio']])) {
+                        $cidades_lista = $GLOBALS['territorios'][$filtros['territorio']];
+                    } else {
+                        // Caso contrário, listar todas as cidades
+                        $cidades_lista = [];
+                        foreach ($GLOBALS['territorios'] as $cids) {
+                            $cidades_lista = array_merge($cidades_lista, $cids);
+                        }
+                        $cidades_lista = array_unique($cidades_lista);
+                        sort($cidades_lista);
                     }
-                    $cidades = array_unique($cidades);
-                    sort($cidades);
-                    foreach ($cidades as $cid): 
+                    foreach ($cidades_lista as $cid): 
                     ?>
                         <option value="<?php echo htmlspecialchars($cid); ?>" 
                                 <?php echo $filtros['cidade'] === $cid ? 'selected' : ''; ?>>
@@ -146,14 +152,28 @@
 <?php if (isset($resultado) && $resultado['total_paginas'] > 1): ?>
     <nav aria-label="Paginação" class="mt-4">
         <ul class="pagination justify-content-center">
+            <?php 
+            // Construir string de query com todos os filtros
+            $query_string = '';
+            if (!empty($filtros['busca'])) {
+                $query_string .= '&busca=' . urlencode($filtros['busca']);
+            }
+            if (!empty($filtros['territorio'])) {
+                $query_string .= '&territorio=' . urlencode($filtros['territorio']);
+            }
+            if (!empty($filtros['cidade'])) {
+                $query_string .= '&cidade=' . urlencode($filtros['cidade']);
+            }
+            ?>
+            
             <?php if ($page > 1): ?>
                 <li class="page-item">
-                    <a class="page-link" href="?page=1<?php echo !empty($filtros['busca']) ? '&busca=' . urlencode($filtros['busca']) : ''; ?>">
+                    <a class="page-link" href="?page=1<?php echo $query_string; ?>">
                         Primeira
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo !empty($filtros['busca']) ? '&busca=' . urlencode($filtros['busca']) : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo $query_string; ?>">
                         Anterior
                     </a>
                 </li>
@@ -161,7 +181,7 @@
 
             <?php for ($i = 1; $i <= $resultado['total_paginas']; $i++): ?>
                 <li class="page-item <?php echo $i === $page ? 'active' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?><?php echo !empty($filtros['busca']) ? '&busca=' . urlencode($filtros['busca']) : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?><?php echo $query_string; ?>">
                         <?php echo $i; ?>
                     </a>
                 </li>
@@ -169,12 +189,12 @@
 
             <?php if ($page < $resultado['total_paginas']): ?>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $page + 1; ?><?php echo !empty($filtros['busca']) ? '&busca=' . urlencode($filtros['busca']) : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page + 1; ?><?php echo $query_string; ?>">
                         Próxima
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $resultado['total_paginas']; ?><?php echo !empty($filtros['busca']) ? '&busca=' . urlencode($filtros['busca']) : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $resultado['total_paginas']; ?><?php echo $query_string; ?>">
                         Última
                     </a>
                 </li>
@@ -188,5 +208,13 @@ function confirmarDelecao(id) {
     if (confirm('Deseja realmente deletar este ponto?')) {
         window.location.href = 'deletar.php?id=' + id + '&confirm=true';
     }
+}
+
+// Atualizar cidades quando território muda (opcional - recarrega a página)
+function atualizarCidades() {
+    // Se quiser recarregar para atualizar as cidades automaticamente
+    // document.querySelector('form').submit();
+    
+    // Ou implementar via AJAX para não recarregar a página
 }
 </script>

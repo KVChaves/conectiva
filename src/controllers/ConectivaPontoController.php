@@ -1,3 +1,4 @@
+<!--ConectivaPontoController.php-->
 <?php
 
 require_once __DIR__ . '/../../config/database.php';
@@ -13,62 +14,62 @@ class ConectivaPontoController {
     }
 
     /**
-     * Validar dados do formulÃ¡rio
+     * Validar dados do formulário
      */
     public function validarDados($data) {
         $erros = [];
 
         // Validar localidade
         if (empty($data['localidade'])) {
-            $erros['localidade'] = 'Localidade Ã© obrigatÃ³ria';
+            $erros['localidade'] = 'Localidade é obrigatória';
         }
 
-        // Validar territÃ³rio
+        // Validar território
         if (empty($data['territorio'])) {
-            $erros['territorio'] = 'TerritÃ³rio Ã© obrigatÃ³rio';
+            $erros['territorio'] = 'Território é obrigatório';
         }
 
         // Validar cidade
         if (empty($data['cidade'])) {
-            $erros['cidade'] = 'Cidade Ã© obrigatÃ³ria';
+            $erros['cidade'] = 'Cidade é obrigatória';
         }
 
-        // Validar endereÃ§o
+        // Validar endereço
         if (empty($data['endereco'])) {
-            $erros['endereco'] = 'EndereÃ§o Ã© obrigatÃ³rio';
+            $erros['endereco'] = 'Endereço é obrigatório';
         }
 
         // Validar latitude
         if (empty($data['latitude']) || !is_numeric($data['latitude'])) {
-            $erros['latitude'] = 'Latitude invÃ¡lida';
+            $erros['latitude'] = 'Latitude inválida';
         }
 
         // Validar longitude
         if (empty($data['longitude']) || !is_numeric($data['longitude'])) {
-            $erros['longitude'] = 'Longitude invÃ¡lida';
+            $erros['longitude'] = 'Longitude inválida';
         }
 
         // Validar IP
         if (empty($data['ip'])) {
-            $erros['ip'] = 'IP Ã© obrigatÃ³rio';
+            $erros['ip'] = 'IP é obrigatório';
         } elseif (!filter_var($data['ip'], FILTER_VALIDATE_IP)) {
-            $erros['ip'] = 'IP invÃ¡lido';
+            $erros['ip'] = 'IP inválido';
         } elseif ($this->model->ipExists($data['ip'], $data['id'] ?? null)) {
-            $erros['ip'] = 'IP jÃ¡ existe no sistema';
+            $erros['ip'] = 'IP já existe no sistema';
         }
 
         // Validar velocidade
         if (empty($data['velocidade'])) {
-            $erros['velocidade'] = 'Velocidade Ã© obrigatÃ³ria';
+            $erros['velocidade'] = 'Velocidade é obrigatória';
         }
 
-        // Validar data de instalaÃ§Ã£o
+        // Validar data de instalação
         if (empty($data['data_instalacao'])) {
-            $erros['data_instalacao'] = 'Data de instalaÃ§Ã£o Ã© obrigatÃ³ria';
+            $erros['data_instalacao'] = 'Data de instalação é obrigatória';
         } else {
             $data_instalacao = DateTime::createFromFormat('Y-m-d', $data['data_instalacao']);
             if (!$data_instalacao) {
-                $erros['data_instalacao'] = 'Data de instalaÃ§Ã£o invÃ¡lida';
+                $erros['data_instalacao'] = 'Data de instalação inválida';
             }
         }
 
@@ -85,7 +86,7 @@ class ConectivaPontoController {
             return [
                 'sucesso' => false,
                 'erros' => $erros,
-                'mensagem' => 'Verifique os erros no formulÃ¡rio'
+                'mensagem' => 'Verifique os erros no formulário'
             ];
         }
 
@@ -115,7 +116,7 @@ class ConectivaPontoController {
             return [
                 'sucesso' => false,
                 'erros' => $erros,
-                'mensagem' => 'Verifique os erros no formulÃ¡rio'
+                'mensagem' => 'Verifique os erros no formulário'
             ];
         }
 
@@ -124,7 +125,7 @@ class ConectivaPontoController {
         if (!$ponto) {
             return [
                 'sucesso' => false,
-                'mensagem' => 'Ponto de internet nÃ£o encontrado'
+                'mensagem' => 'Ponto de internet não encontrado'
             ];
         }
 
@@ -150,7 +151,7 @@ class ConectivaPontoController {
         if (!$ponto) {
             return [
                 'sucesso' => false,
-                'mensagem' => 'Ponto de internet nÃ£o encontrado'
+                'mensagem' => 'Ponto de internet não encontrado'
             ];
         }
 
@@ -206,7 +207,7 @@ class ConectivaPontoController {
     }
 
     /**
-     * Obter com paginaÃ§Ã£o
+     * Obter com paginação
      */
     public function paginar($page = 1, $limit = 10) {
         $total = $this->model->count();
@@ -222,7 +223,59 @@ class ConectivaPontoController {
     }
 
     /**
-     * Obter estatÃ­sticas
+     * Obter com paginação E filtros
+     */
+    public function paginarComFiltros($page = 1, $limit = 10, $filtros = []) {
+        $offset = ($page - 1) * $limit;
+        
+        $sql = "SELECT * FROM conectiva WHERE 1=1";
+        $params = [];
+
+        // Busca por texto
+        if (!empty($filtros['busca'])) {
+            $sql .= " AND (localidade LIKE ? OR endereco LIKE ? OR ip LIKE ?)";
+            $params[] = '%' . $filtros['busca'] . '%';
+            $params[] = '%' . $filtros['busca'] . '%';
+            $params[] = '%' . $filtros['busca'] . '%';
+        }
+
+        // Filtro por cidade
+        if (!empty($filtros['cidade'])) {
+            $sql .= " AND cidade = ?";
+            $params[] = $filtros['cidade'];
+        }
+
+        // Filtro por território
+        if (!empty($filtros['territorio'])) {
+            $sql .= " AND territorio = ?";
+            $params[] = $filtros['territorio'];
+        }
+
+        // Contar total com filtros
+        $stmtCount = $this->pdo->prepare(str_replace('SELECT *', 'SELECT COUNT(*) as total', $sql));
+        $stmtCount->execute($params);
+        $total = $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
+
+        // Buscar dados com paginação
+        $sql .= " ORDER BY id DESC LIMIT ? OFFSET ?";
+        $params[] = $limit;
+        $params[] = $offset;
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $dados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return [
+            'dados' => $dados,
+            'total' => $total,
+            'pagina' => $page,
+            'limite' => $limit,
+            'total_paginas' => ceil($total / $limit)
+        ];
+    }
+
+    /**
+     * Obter estatísticas
      */
     public function getEstatisticas() {
         $sql = "SELECT 
