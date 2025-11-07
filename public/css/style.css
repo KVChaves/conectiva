@@ -135,7 +135,7 @@ body {
 
 .btn-primary-custom:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 12px rgba(175, 168, 168, 0.4);
 }
 
 /* ====== TABELAS ====== */
@@ -424,6 +424,30 @@ body.mapa-fullscreen .filters input {
 .btn {
     padding: 8px 15px;
     border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #10b981;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5568d3;
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #d0d0d0;
 }
 
 /* Adicionar ao final do arquivo de CSS */

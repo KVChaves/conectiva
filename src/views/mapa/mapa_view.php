@@ -2,11 +2,22 @@
     <i class="fas fa-map"></i> Mapa de Pontos de Internet - Bahia
 </div>
 
-<!-- DEBUG -->
-<div style="display: none;" id="debug">
-    <?php echo "<!-- Total de pontos PHP: " . count($pontos) . " -->\n"; ?>
+<!-- FILTROS -->
+<div class="filters">
+    <input type="text" id="filtroSearchPontos" placeholder="Buscar por localidade, cidade ou IP...">
+    <select id="filtroCidade">
+        <option value="">-- Todas as Cidades --</option>
+        <?php 
+        $cidades = array_unique(array_column($pontos, 'cidade'));
+        sort($cidades);
+        foreach ($cidades as $cidade): 
+        ?>
+            <option value="<?php echo htmlspecialchars($cidade); ?>">
+                <?php echo htmlspecialchars($cidade); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
 </div>
-
 
 <!-- LEGENDA -->
 <div style="position: absolute; bottom: 20px; right: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 1000; max-width: 250px;">
@@ -38,86 +49,71 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
-
-
 <script>
-    // Dados dos pontos do servidor
-    console.log('Iniciando script...');
+    console.log('Iniciando script do mapa...');
     console.log('PHP $pontos count: <?php echo count($pontos); ?>');
-    
     
     // Gerar JSON de forma segura
     const pontosData = [
-    <?php 
-        if (!empty($pontos)) {
-            $jsonItems = [];
-            $errosEnconrados = 0;
-            
-            foreach ($pontos as $ponto) {
-                // Limpar e validar dados antes de criar o item
-                $item = [
-                    'id' => (int)$ponto['id'],
-                    'localidade' => isset($ponto['localidade']) ? trim((string)$ponto['localidade']) : '',
-                    'territorio' => isset($ponto['territorio']) ? trim((string)$ponto['territorio']) : '',
-                    'cidade' => isset($ponto['cidade']) ? trim((string)$ponto['cidade']) : '',
-                    'endereco' => isset($ponto['endereco']) ? trim((string)$ponto['endereco']) : '',
-                    'latitude' => isset($ponto['latitude']) && $ponto['latitude'] !== null && $ponto['latitude'] !== '' 
-                        ? (float)str_replace(',', '.', $ponto['latitude']) 
-                        : null,
-                    'longitude' => isset($ponto['longitude']) && $ponto['longitude'] !== null && $ponto['longitude'] !== '' 
-                        ? (float)str_replace(',', '.', $ponto['longitude']) 
-                        : null,
-                    'ip' => isset($ponto['ip']) ? trim((string)$ponto['ip']) : '',
-                    'circuito' => isset($ponto['circuito']) ? trim((string)$ponto['circuito']) : '',
-                    'velocidade' => isset($ponto['velocidade']) ? trim((string)$ponto['velocidade']) : '',
-                    'tipo' => isset($ponto['tipo']) ? trim((string)$ponto['tipo']) : '',
-                    'marcador' => isset($ponto['marcador']) ? trim((string)$ponto['marcador']) : '',
-                    'data_instalacao' => isset($ponto['data_instalacao']) ? trim((string)$ponto['data_instalacao']) : '',
-                    'observacao' => isset($ponto['observacao']) ? trim((string)$ponto['observacao']) : ''
-                ];
+        <?php 
+            if (!empty($pontos)) {
+                $jsonItems = [];
+                $errosEnconrados = 0;
                 
-                // Tentar codificar em JSON
-                $jsonEncoded = json_encode($item, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_IGNORE);
-                
-                // Verificar se a codificação foi bem-sucedida
-                if ($jsonEncoded !== false && $jsonEncoded !== null) {
-                    $jsonItems[] = $jsonEncoded;
-                } else {
-                    // Logar erro para debug
-                    $errosEnconrados++;
-                    error_log("Erro ao codificar ponto ID {$ponto['id']}: " . json_last_error_msg());
+                foreach ($pontos as $ponto) {
+                    // Limpar e validar dados antes de criar o item
+                    $item = [
+                        'id' => (int)$ponto['id'],
+                        'localidade' => isset($ponto['localidade']) ? trim((string)$ponto['localidade']) : '',
+                        'territorio' => isset($ponto['territorio']) ? trim((string)$ponto['territorio']) : '',
+                        'cidade' => isset($ponto['cidade']) ? trim((string)$ponto['cidade']) : '',
+                        'endereco' => isset($ponto['endereco']) ? trim((string)$ponto['endereco']) : '',
+                        'latitude' => isset($ponto['latitude']) && $ponto['latitude'] !== null && $ponto['latitude'] !== '' 
+                            ? (float)str_replace(',', '.', $ponto['latitude']) 
+                            : null,
+                        'longitude' => isset($ponto['longitude']) && $ponto['longitude'] !== null && $ponto['longitude'] !== '' 
+                            ? (float)str_replace(',', '.', $ponto['longitude']) 
+                            : null,
+                        'ip' => isset($ponto['ip']) ? trim((string)$ponto['ip']) : '',
+                        'circuito' => isset($ponto['circuito']) ? trim((string)$ponto['circuito']) : '',
+                        'velocidade' => isset($ponto['velocidade']) ? trim((string)$ponto['velocidade']) : '',
+                        'tipo' => isset($ponto['tipo']) ? trim((string)$ponto['tipo']) : '',
+                        'marcador' => isset($ponto['marcador']) ? trim((string)$ponto['marcador']) : '',
+                        'data_instalacao' => isset($ponto['data_instalacao']) ? trim((string)$ponto['data_instalacao']) : '',
+                        'observacao' => isset($ponto['observacao']) ? trim((string)$ponto['observacao']) : ''
+                    ];
                     
-                    // Tentar limpar caracteres problemáticos e tentar novamente
-                    foreach ($item as $key => $value) {
-                        if (is_string($value)) {
-                            // Remove caracteres inválidos UTF-8
-                            $item[$key] = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
-                        }
-                    }
-                    
+                    // Tentar codificar em JSON
                     $jsonEncoded = json_encode($item, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_IGNORE);
+                    
+                    // Verificar se a codificação foi bem-sucedida
                     if ($jsonEncoded !== false && $jsonEncoded !== null) {
                         $jsonItems[] = $jsonEncoded;
+                    } else {
+                        // Logar erro para debug
+                        $errosEnconrados++;
+                        error_log("Erro ao codificar ponto ID {$ponto['id']}: " . json_last_error_msg());
+                        
+                        // Tentar limpar caracteres problemáticos e tentar novamente
+                        foreach ($item as $key => $value) {
+                            if (is_string($value)) {
+                                $item[$key] = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+                            }
+                        }
+                        
+                        $jsonEncoded = json_encode($item, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_IGNORE);
+                        if ($jsonEncoded !== false && $jsonEncoded !== null) {
+                            $jsonItems[] = $jsonEncoded;
+                        }
                     }
                 }
+                
+                echo implode(",\n        ", $jsonItems);
             }
-            
-            echo implode(",\n", $jsonItems);
-            
-            // Debug: mostrar quantos pontos foram processados
-            if ($errosEnconrados > 0) {
-                echo "\n// AVISO: $errosEnconrados pontos não puderam ser codificados em JSON\n";
-            }
-        }
-    ?>
-];
+        ?>
+    ];
     
-        
-    console.log('Total de pontos:', pontosData.length);
-
-    
-    
-
+    console.log('Total de pontos carregados:', pontosData.length);
     if (pontosData.length > 0) {
         console.log('Primeiro ponto:', pontosData[0]);
         
@@ -153,7 +149,6 @@
                 const lng = parseFloat(ponto.longitude);
 
                 if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
-
                     // Definir cor baseado no tipo de conexão
                     let cor = '#9ca3af'; // Cinza padrão
                     
@@ -181,23 +176,22 @@
 
                     // Popup com informações do ponto
                     const popupContent = `
-                    <div class="popup-content" style="width: 250px;">
-                        <h3 style="margin: 0 0 10px 0; color: ${cor};">
-                            ${ponto.localidade || 'N/A'}
-                        </h3>
-                        <hr style="margin: 5px 0;">
-                        <p><strong>Cidade:</strong> ${ponto.cidade || 'N/A'}</p>
-                        <p><strong>IP:</strong> <code>${ponto.ip || 'N/A'}</code></p>
-                        <p><strong>Velocidade:</strong> <span style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">${ponto.velocidade || 'N/A'}</span></p>
-                        <p><strong>Tipo:</strong> ${ponto.tipo || 'N/A'}</p>
-                        <p><strong>Data Instalação:</strong> ${ponto.data_instalacao || 'N/A'}</p>
-                        ${ponto.observacao ? `<p><strong>Observação:</strong> ${ponto.observacao}</p>` : ''}
-                        <div style="margin-top: 10px;">
-                            <a href="src/Views/conectiva/detalhar.php?id=${ponto.id}" class="btn btn-sm btn-primary" style="padding: 4px 8px; font-size: 12px;">Ver Detalhes</a>
-                            <a href="src/Views/conectiva/editar.php?id=${ponto.id}" class="btn btn-sm btn-warning" style="padding: 4px 8px; font-size: 12px; margin-left: 5px;">Editar</a>
+                        <div class="popup-content">
+                            <h3 style="color: ${cor};">${ponto.localidade || 'N/A'}</h3>
+                            <hr>
+                            <p><strong>Cidade:</strong> ${ponto.cidade || 'N/A'}</p>
+                            <p><strong>Endereço:</strong> ${ponto.endereco || 'Não informado'}</p>
+                            <p><strong>IP:</strong> <code>${ponto.ip || 'N/A'}</code></p>
+                            <p><strong>Velocidade:</strong> <span style="background: #e0e0e0; padding: 2px 6px; border-radius: 3px;">${ponto.velocidade || 'N/A'}</span></p>
+                            <p><strong>Tipo:</strong> ${ponto.tipo || 'N/A'}</p>
+                            <p><strong>Data Instalação:</strong> ${ponto.data_instalacao || 'N/A'}</p>
+                            ${ponto.observacao ? `<p><strong>Observação:</strong> ${ponto.observacao}</p>` : ''}
+                            <div class="btn-group">
+                                <a href="src/Views/conectiva/detalhar.php?id=${ponto.id}" class="btn btn-sm btn-primary">Ver Detalhes</a>
+                                <a href="src/Views/conectiva/editar.php?id=${ponto.id}" class="btn btn-sm btn-warning">Editar</a>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
 
                     marcador.bindPopup(popupContent);
                     marcador.addTo(mapa);
@@ -222,12 +216,43 @@
             mapa.fitBounds(group.getBounds().pad(0.1));
             console.log('Zoom ajustado para mostrar todos os marcadores');
         }
+
+        // Filtros
+        document.getElementById('filtroCidade').addEventListener('change', function() {
+            const cidade = this.value;
+            const busca = document.getElementById('filtroSearchPontos').value.toLowerCase();
+            
+            const filtrado = pontosData.filter(p => {
+                const cidadeMatch = cidade === '' || p.cidade === cidade;
+                const buscaMatch = busca === '' || 
+                    p.localidade.toLowerCase().includes(busca) ||
+                    p.cidade.toLowerCase().includes(busca) ||
+                    p.ip.toLowerCase().includes(busca);
+                return cidadeMatch && buscaMatch;
+            });
+
+            adicionarMarcadores(filtrado);
+        });
+
+        document.getElementById('filtroSearchPontos').addEventListener('keyup', function() {
+            const busca = this.value.toLowerCase();
+            const cidade = document.getElementById('filtroCidade').value;
+            
+            const filtrado = pontosData.filter(p => {
+                const cidadeMatch = cidade === '' || p.cidade === cidade;
+                const buscaMatch = busca === '' || 
+                    p.localidade.toLowerCase().includes(busca) ||
+                    p.cidade.toLowerCase().includes(busca) ||
+                    p.ip.toLowerCase().includes(busca);
+                return cidadeMatch && buscaMatch;
+            });
+
+            adicionarMarcadores(filtrado);
+        });
         
         console.log('Mapa inicializado com sucesso!');
     } catch (error) {
         console.error('Erro ao inicializar mapa:', error);
         alert('Erro ao carregar o mapa: ' + error.message);
     }
-</script>
-
 </script>

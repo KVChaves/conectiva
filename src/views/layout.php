@@ -70,13 +70,20 @@ $mensagens = obterMensagens();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <hr>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dashboard.php') !== false) ? 'active' : ''; ?>" 
                            href="<?php echo getUrlBase(); ?>/src/Views/relatorios/dashboard.php">
                             <i class="fas fa-chart-bar"></i>
                             <span>Dashboard</span>
+                        </a>
+                    </li>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'helpdesk.php') !== false) ? 'active' : ''; ?>" 
+                           href="<?php echo getUrlBase(); ?>/src/Views/relatorios/helpdesk.php">
+                            <i class="fas fas fa-headset"></i>
+                            <span>Helpdesk</span>
                         </a>
                     </li>
                 </ul>
