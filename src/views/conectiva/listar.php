@@ -10,16 +10,14 @@ require_once __DIR__ . '/../../../src/Utilities/functions.php';
 $controller = new ConectivaPontoController($pdo);
 $titulo = 'Listar Pontos de Internet';
 
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $filtros = [
     'busca' => $_GET['busca'] ?? '',
     'cidade' => $_GET['cidade'] ?? '',
     'territorio' => $_GET['territorio'] ?? ''
 ];
 
-// Usar o novo método que combina paginação + filtros
-$resultado = $controller->paginarComFiltros($page, ITEMS_POR_PAGINA, $filtros);
-$pontos = $resultado['dados'];
+// Buscar todos os dados com filtros (sem paginação)
+$pontos = $controller->getAll($filtros);
 
 $view = __DIR__ . '/listar_view.php';
 include __DIR__ . '/../layout.php';

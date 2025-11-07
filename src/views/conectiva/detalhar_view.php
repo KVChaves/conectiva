@@ -35,13 +35,7 @@
                 </div>
 
                 <div class="row mb-4">
-                    <div class="col-md-4">
-                        <h6 class="text-muted">IP</h6>
-                        <p>
-                            <code class="bg-light p-2 rounded"><?php echo htmlspecialchars($ponto['ip']); ?></code>
-                        </p>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <h6 class="text-muted">Velocidade</h6>
                         <p>
                             <span class="badge bg-info badge-custom">
@@ -49,24 +43,13 @@
                             </span>
                         </p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <h6 class="text-muted">Tipo</h6>
                         <p>
                             <span class="badge bg-primary badge-custom">
                                 <?php echo htmlspecialchars($ponto['tipo'] ?? 'N/A'); ?>
                             </span>
                         </p>
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h6 class="text-muted">Circuito</h6>
-                        <p><?php echo htmlspecialchars($ponto['circuito'] ?? '-'); ?></p>
-                    </div>
-                    <div class="col-md-6">
-                        <h6 class="text-muted">Marcador</h6>
-                        <p><?php echo htmlspecialchars($ponto['marcador'] ?? '-'); ?></p>
                     </div>
                 </div>
 

@@ -197,7 +197,7 @@
                     <th>Velocidade</th>
                     <th>Tipo</th>
                     <th>Territorio</th>
-                    <th>IP</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -214,7 +214,7 @@
                             </td>
                             <td><?php echo htmlspecialchars($ponto['tipo'] ?? '-'); ?></td>
                             <td><small><?php echo htmlspecialchars(substr($ponto['territorio'], 0, 15)); ?></small></td>
-                            <td><code><?php echo htmlspecialchars($ponto['ip']); ?></code></td>
+                            
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

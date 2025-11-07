@@ -14,11 +14,11 @@ date_default_timezone_set(TIMEZONE);
 
 // Tipos de conexão
 define('TIPOS_CONEXAO', [
-    'INTERNET CEDIDA',
-    'INTERNET LOCAL',
+    'Internet Cedida',
+    'Internet Local',
     'VELOX',
-    'MODEM VIVO',
-    'REDE GOVERNO'
+    'Modem Vivo',
+    'Rede Governo'
 ]);
 
 // Velocidades padrão (em Mbps)
@@ -28,6 +28,7 @@ define('VELOCIDADES_PADRAO', [
     '10 Mbps',
     '20 Mbps',
     '50 Mbps',
+    '60 Mbps',
     '100 Mbps',
     '200 Mbps'
 ]);

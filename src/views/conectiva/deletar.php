@@ -1,16 +1,16 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../src/Controllers/ConectivaPontoController.php';
-require_once __DIR__ . '/../../src/Utilities/functions.php';
+require_once __DIR__ . '/../../../config/database.php';
+require_once __DIR__ . '/../../../src/Controllers/ConectivaPontoController.php';
+require_once __DIR__ . '/../../../src/Utilities/functions.php';
 
 $id = (int)($_GET['id'] ?? 0);
 $confirm = isset($_GET['confirm']) && $_GET['confirm'] === 'true';
 
 // Validar ID
 if ($id <= 0) {
-    addMensagemErro('ID invÃ¡lido!');
+    addMensagemErro('ID inválido!');
     redirecionar('listar.php');
 }
 
@@ -19,17 +19,17 @@ $ponto = $controller->getPorId($id);
 
 // Verificar se ponto existe
 if (!$ponto) {
-    addMensagemErro('Ponto de internet nÃ£o encontrado!');
+    addMensagemErro('Ponto de internet não encontrado!');
     redirecionar('listar.php');
 }
 
-// Se nÃ£o foi confirmado, redirecionar para listagem
+// Se não foi confirmado, redirecionar para listagem
 if (!$confirm) {
-    addMensagemAviso('AÃ§Ã£o nÃ£o confirmada!');
+    addMensagemAviso('Ação não confirmada!');
     redirecionar('listar.php');
 }
 
-// Processar exclusÃ£o
+// Processar exclusão
 $resultado = $controller->deletar($id);
 
 if ($resultado['sucesso']) {

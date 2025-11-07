@@ -1,7 +1,7 @@
 /* ====== VARIÁVEIS DE COR ====== */
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
+    --primary-color: #176b25;
+    --secondary-color: #00a045;
     --success-color: #10b981;
     --danger-color: #ef4444;
     --warning-color: #f59e0b;
@@ -424,4 +424,48 @@ body.mapa-fullscreen .filters input {
 .btn {
     padding: 8px 15px;
     border: none;
+}
+
+/* Adicionar ao final do arquivo de CSS */
+
+/* ====== AJUSTE DOS BOTÕES DE AÇÃO NA TABELA ====== */
+.table .btn-group {
+    display: inline-flex;
+    gap: 4px;
+    margin: 0;
+}
+
+.table .btn-group .btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+.table .btn-group .btn i {
+    margin: 0;
+}
+
+/* Garante que os botões não quebrem de linha */
+.table td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+}
+
+/* Ajuste específico para coluna de ações */
+.table th:last-child,
+.table td:last-child {
+    white-space: nowrap;
+}
+
+/* Responsive - Ajusta em mobile */
+@media (max-width: 768px) {
+    .table .btn-group {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    
+    .table .btn-group .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
 }
