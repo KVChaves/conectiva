@@ -2,23 +2,6 @@
     <i class="fas fa-map"></i> Mapa de Pontos de Internet - Bahia
 </div>
 
-<!-- FILTROS -->
-<div class="filters">
-    <input type="text" id="filtroSearchPontos" placeholder="Buscar por localidade, cidade ou IP...">
-    <select id="filtroCidade">
-        <option value="">-- Todas as Cidades --</option>
-        <?php 
-        $cidades = array_unique(array_column($pontos, 'cidade'));
-        sort($cidades);
-        foreach ($cidades as $cidade): 
-        ?>
-            <option value="<?php echo htmlspecialchars($cidade); ?>">
-                <?php echo htmlspecialchars($cidade); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-</div>
-
 <!-- LEGENDA -->
 <div style="position: absolute; bottom: 20px; right: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 1000; max-width: 250px;">
     <h6 style="margin: 0 0 10px 0; font-weight: bold;">Legenda</h6>
@@ -217,38 +200,6 @@
             console.log('Zoom ajustado para mostrar todos os marcadores');
         }
 
-        // Filtros
-        document.getElementById('filtroCidade').addEventListener('change', function() {
-            const cidade = this.value;
-            const busca = document.getElementById('filtroSearchPontos').value.toLowerCase();
-            
-            const filtrado = pontosData.filter(p => {
-                const cidadeMatch = cidade === '' || p.cidade === cidade;
-                const buscaMatch = busca === '' || 
-                    p.localidade.toLowerCase().includes(busca) ||
-                    p.cidade.toLowerCase().includes(busca) ||
-                    p.ip.toLowerCase().includes(busca);
-                return cidadeMatch && buscaMatch;
-            });
-
-            adicionarMarcadores(filtrado);
-        });
-
-        document.getElementById('filtroSearchPontos').addEventListener('keyup', function() {
-            const busca = this.value.toLowerCase();
-            const cidade = document.getElementById('filtroCidade').value;
-            
-            const filtrado = pontosData.filter(p => {
-                const cidadeMatch = cidade === '' || p.cidade === cidade;
-                const buscaMatch = busca === '' || 
-                    p.localidade.toLowerCase().includes(busca) ||
-                    p.cidade.toLowerCase().includes(busca) ||
-                    p.ip.toLowerCase().includes(busca);
-                return cidadeMatch && buscaMatch;
-            });
-
-            adicionarMarcadores(filtrado);
-        });
         
         console.log('Mapa inicializado com sucesso!');
     } catch (error) {
