@@ -81,7 +81,7 @@ $mensagens = obterMensagens();
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'helpdesk.php') !== false) ? 'active' : ''; ?>" 
-                           href="<?php echo getUrlBase(); ?>/src/Views/relatorios/helpdesk.php">
+                           href="<?php echo getUrlBase(); ?>/src/Views/helpdesk/helpdesk.php">
                             <i class="fas fas fa-headset"></i>
                             <span>Helpdesk</span>
                         </a>

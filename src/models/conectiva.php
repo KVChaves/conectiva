@@ -66,25 +66,15 @@ class Conectiva {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Buscar por IP
-     */
-    public function getByIp($ip) {
-        $sql = "SELECT * FROM {$this->table} WHERE ip = :ip";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':ip', $ip, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
 
     /**
      * Criar novo ponto de internet
      */
     public function create($data) {
         $sql = "INSERT INTO {$this->table} 
-                (localidade, territorio, cidade, endereco, latitude, longitude, ip, circuito, velocidade, tipo, marcador, data_instalacao, observacao) 
+                (localidade, territorio, cidade, endereco, latitude, longitude, velocidade, tipo, data_instalacao, observacao) 
                 VALUES 
-                (:localidade, :territorio, :cidade, :endereco, :latitude, :longitude, :ip, :circuito, :velocidade, :tipo, :marcador, :data_instalacao, :observacao)";
+                (:localidade, :territorio, :cidade, :endereco, :latitude, :longitude, :velocidade, :tipo, :data_instalacao, :observacao)";
 
         $stmt = $this->pdo->prepare($sql);
         
@@ -112,8 +102,7 @@ class Conectiva {
         $sql = "UPDATE {$this->table} 
                 SET localidade = :localidade, territorio = :territorio, cidade = :cidade, 
                     endereco = :endereco, latitude = :latitude, longitude = :longitude, 
-                    ip = :ip, circuito = :circuito, velocidade = :velocidade, 
-                    tipo = :tipo, marcador = :marcador, data_instalacao = :data_instalacao, 
+                    velocidade = :velocidade, tipo = :tipo, data_instalacao = :data_instalacao, 
                     observacao = :observacao 
                 WHERE id = :id";
 
@@ -126,11 +115,8 @@ class Conectiva {
         $stmt->bindParam(':endereco', $data['endereco'], PDO::PARAM_STR);
         $stmt->bindParam(':latitude', $data['latitude'], PDO::PARAM_STR);
         $stmt->bindParam(':longitude', $data['longitude'], PDO::PARAM_STR);
-        $stmt->bindParam(':ip', $data['ip'], PDO::PARAM_STR);
-        $stmt->bindParam(':circuito', $data['circuito'], PDO::PARAM_STR);
         $stmt->bindParam(':velocidade', $data['velocidade'], PDO::PARAM_STR);
         $stmt->bindParam(':tipo', $data['tipo'], PDO::PARAM_STR);
-        $stmt->bindParam(':marcador', $data['marcador'], PDO::PARAM_STR);
         $stmt->bindParam(':data_instalacao', $data['data_instalacao'], PDO::PARAM_STR);
         $stmt->bindParam(':observacao', $data['observacao'], PDO::PARAM_STR);
 
